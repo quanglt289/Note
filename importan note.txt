@@ -319,5 +319,4 @@ table space cho bigfile table space
 <NghiepVu>
 	Truoc khi goi dien, list cac cau hoi va van de can trao doi ra
 	Khi hop voi doi tac, can nghe va list cac cau hoi cua ho ra, chua can nghi tra loi het dc ngay
-	
 </NghiepVu>
