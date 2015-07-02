@@ -1,0 +1,323 @@
+﻿plsql
+wizdl             test web function
+struts 2
+hibernate
+ibatis
+osgi
+JNI gồm 6 bước:
+1	- Viết code khai báo hàm native
+	- load thư viện dll qua System.load("thư viện đầy đủ đường dẫn"); hoặc System.loadLibrary("thư viện trong System32");
+	- Gọi hàm trong thư viện dll
+2	- Biên dịch lớp java
+	- 
+3	- Viết file header(.h) cho dll
+	- Xây dựng header thông qua javah hoặc tự viết
+	- JNIEXPORT void JNICALL Java_TestJNI_inDll(JNIEnv *, jobject);
+		JNIEXPORT và JNICALL là từ khóa mặc định
+		void: kiểu trả về của hàm java
+		JNIEnv * tham chiếu tới các hàm khác trong lớp java
+		jobject: tham chiếu(con trỏ) tới chính đối tượng cửa lớp trong java. Dùng khi đối tượng của lớp cần gọi tới một hàm khác trong cùng đối tượng
+4	- Viết code file cho các function của dll
+5	- Build thư viện dll
+6	- Chạy chương trình java
+
+
+
+không tìm thấy chữ kí trong file xml: phải setNamespaceAware(true);
+set environment variables(biến môi trường) set trong phần system, khi xóa biến môi trường phải khởi động lại mới có hiệu lực
+
+
+struts.xml -> mapping action va class java, hien thi ket qua ra trang jsp
+" There is no Action mapped for action name " file struts.xml cau hinh bi loi, kiem tra lai namespace. Nếu không phải xem lại cách gọi action, 
+	giả sử "<package name="default" namespace="/" extends="struts-default"> 
+				<action name="abcAction" ...."
+	với file test.war(hoặc để trong thư mục test) lời gọi là test.abcAction- test/abcAction.action
+
+Firefox chứa cấu hình plugin trong file "%APPDATA%\Mozilla\Firefox\Profiles\Thư_mục_bat_ki\pluginreg.dat" nếu xóa file này và restart firefox, file pluginreg.dat sẽ được tạo lại, mặc định enable tất cả các plugin(từ firefox 3.6 trở lên)
+Chrome chứa cấu hình plugin trong file "%Appdata%\\Local\Google\Chrome\User Data\Default\Preferences" nếu xóa file này và restart chrome, file Preferences tự động được tạo lại, mặc định enable tất cả các plugin.
+
+verify with base64 certificate
+http://stackoverflow.com/questions/8412838/cryptoapi-wincrypt-how-to-import-private-key-in-pem-file-in-c
+http://stackoverflow.com/questions/7573754/how-to-use-cryptoapi-and-cryptimportkey-with-a-asn-1-pem-openssl-public-key
+http://stackoverflow.com/questions/1231178/load-an-x509-pem-file-into-windows-cryptoapi
+Web services: ứng dụng web, là cách thức cho phép các ứng dụng desktop có thể thực thi được trên môi trường web, thông qua việc truyền và nhận dữ liệu, lời gọi các hàm thông qua XML
+SOAP: giao thức truyền dữ liệu môi trường web, với đặc trưng là dựa trên chuẩn XML. SOAP là 1 file XML được đóng gói gồm các trường SOAP envoloping, soap header, soap body, soap eror... Trong đó envolope là trường root, tất cả các trường trên được mở đầu: "soap:tên trường"
+Soap header dùng để chứa thông tin về ứng dụng như phiên bản, nhà cung cấp, bản quyền... soap body dùng chứa thông tin dữ liệu cần chuyền giao: lời gọi hàm, hàm trả về, dữ liệu kèm theo. Ngoài ra soap: error cũng phải nằm trong soap:body
+WSDL:(Web services description language) là ngôn ngữ dùng để mô tả về web services, nó thực chất là cấu trúc XML mô tả các thông tin vể web services
+Linq: khi kéo thả table từ Server explorer vào(xem slide hướng dẫn trong MVC3 training), đã tự tạo class truy cập table đó cho mình
+Linq: khi kết nối tới DB, trong web.config đã tự tạo chuỗi kết nối tới sql server cho mình, dựa trên những tham số đã nhập vào
+
+Kiểm tra yêu cầu tạo cert được gửi từ client lên server: certificate enrollment requests(trong certmgr.msc) có thông tin cert tự tạo ra trên win từ request, với các trường public key, issuer lấy từ request, các trường sinh trên server như private key... thì được tự tạo trên client để hiển thị cho dễ nhìn
+quy trình obfuscation: build -> chạy tattletale để check class trùng, file jar ko sử dụng -> xóa các class, file jar trong từng file jar đơn lẻ trước-> build thành 1 file jar -> xóa Meta-inf -> obfuscation -> kí
+quá trình obfuscation: cần xóa hết các dòng file name, hash trong META-INF/MANIFEST.MF. Trong file này sẽ chứa các file external jar cần load, vị trí để load chúng
+quá trình obfuscation: khi add exclude class phải kiểm tra nếu là class thì add vào class, nếu là interface/abstract class thì add vào extend/implement class. Sau đó nên thêm add method(click ok), add field(click ok)
+quá trình obfuscation: cast error: xẩy ra khi 2 class đó cùng kế thừa, implement từ 1 class chung. Phải khai báo class cha đó vào exclude(nên là extend/implement class)
+quá trình obfuscation: chú ý thứ tự đưa các file jar vào để tối giản. Các file sẽ được thực hiện theo thứ tự từ trên xuống.
+try catch exception cho java: bắt throwable là cao nhất, có thể hiển thị ra mọi lỗi. Ghi log sẽ bắt được nhiều hơn catch Exception
+kiểm tra các file jar ko dùng, các file class bị trùng: tattletale theo câu lệnh 
+kiểm tra file thiếu của applet đã tối giản: control panel -> java -> advance -> debugging, chọn bật tất cả các option tracking, logging, exception lên. Trong quá trình chạy applet-> java consoler -> chú ý các exception, cache not found -> thiếu package, class để bổ sung
+cookie tạo bởi java.Net.CookieManager() chỉ lưu trong bộ nhớ ram.
+de login và ms sql server can dat: dat user name và password cho tai khoan login db, trong security/user/ten tai khoan/ cần đặt status của tài khoản là enable login
+Khi cài đặt SQL Server nếu đặt cách thức login là Windows Authentication(default) thì tài khoản sa sẽ bị disable
+Gửi mail bằng code C#, tùy theo mail server(host) mà phải thiết lập cổng để gửi mail(mặc định là 25), thiết lập phương thức gửi mail có bảo mật hay không(SSL true hay false)
+Gửi mail bằng code C#, phải đặt UseDefaultCredentials = false; trước Credentials = new NetworkCredential(this._smtpUsername, this._smtpPassword); nếu không sẽ không được xác thực mail để gửi
+[Authorize] la check permission phai login, mac dinh duoc asp.net mvc tao san
+<XSD>
+	- xml de the cha co the chua nhieu the con(vd <persions><persion/><persion/>.....) phai de the cha la complexType va co thuoc tinh maxOccurs="unbounded"
+	- element có thể có, có thể không xuất hiện trong file xml: đặt cho element thuộc tính minOccurs="0" trong file .xsd
+	- element có thể xuất hiện nhiều lần trong file xml: đặt cho element thuộc tính maxOccurs="unbounded" trong file .xsd
+	- để một elemnt vừa có thể nhận giá trị kiểu số, vừa chấp nhận giá trị null trong .xsd ta định nghĩa một kiểu mới
+				<xs:simpleType name="integer-or-empty">
+					<xs:union memberTypes="xs:integer empty-string" />
+				</xs:simpleType>
+				<xs:simpleType name="empty-string">
+					<xs:restriction base="xs:string">
+						<xs:enumeration value="" />
+					</xs:restriction>
+				</xs:simpleType>
+		và đặt kiểu của element đó type="integer-or-empty" như trên
+</XSD>
+
+<IIS>
+	install windows feature(IIS): control panel -> add/remove -> windows feature -> IIS
+		chu y: phai tu chinh them
+			-> phai cai FTP service
+			-> phai cai IIS management consoler va IIS management services
+		restart may roi chay duoi quyen ADMIN:
+	C:\Windows\Microsoft.NET\Framework\v4.0.30319\aspnet_regiis.exe -i (-u to uninstall roi install lai)
+	C:\Windows\Microsoft.NET\Framework\v2.0.XXXX\aspnet_regiis.exe -i (-> thuc chat la chay services cho .net 3.5)
+		=> đây là cài asp.net cho IIS
+
+	De test IIS da cai dat: vao web theo url: localhost se ra man hinh cua IIS, public 1 trang aspnet ra se nhan
+	deploy vao IIS: can kiem tra application pool truoc, xem web chay tren pool cua .net phien ban nao(nhay phai vao web site trong IIS, chon advance setting, chinh application pool)
+	tao duong dan mac dinh cho mot website/webservices trong IIS: sau khi da tao website xong, chon Configuration Editor(tinh nang nay chi co trong IIS7 tro len, neu la IIS 6 phai cai them tool de co)
+		-> trong phan session, chon system.webServer/defaultDocument(can luu y phan from, phai chon tu website ta vua cai dat)
+		-> trong phan Deepest Path/files chon button browes
+		-> trong cua so moi hien ra, trong phan action chon add
+		-> them ten file lam duong dan mac dinh vao gia tri value trong properties, dong lai cua so
+		-> tai man hinh cua Configuration Editor, phan action PHAI CHON APPLY thi moi co tac dung
+	List tất cả các file trong 1 thư mục nhất định: trong web.config của ứng dụng web, thêm đoạn
+		<location path="special_directory_name_here">
+			<system.webServer>
+			<directoryBrowse enabled="true" />
+			</system.webServer>
+		</location>
+		
+	List tất cả các file trong ứng dụng web qua webbrower: trong IIS, chọn ứng dụng web cần thiết lập -> chọn Directory Browsing -> chọn enable
+	Lỗi ERR 401.3 ...ACL -> đặt quyền truy cập thư mục cho tài khoan IUSR(quyền truy cập, đọc), cho tài khoản IIS_IUSRS(quyền truy cập, đọc)
+</IIS>
+<gia lap androi>
+	Cai dat application vao androi gia lap, can copy file cai dat(.apk) vao ../sdk/tools
+		-> dung cmd, chuyen toi thu muc vua dat file .apk
+		-> go lenh adb install ten_file_apk.apk
+		-> chu y: neu hien loi 'adb' is not recognized as an internal or external command, operable program or batch file. Can copy 3 file adb.exe, AdbWinApi.dll and InstallAgent.bat(download tren mang) vao ../sdk/tools
+</gia lap androi>
+<aspnet>
+	trong cung 1 controller, khong the ton tai 2 action co cung ten, cung nhan cach goi tu view(cung qua get/post) ma chi khac nhau ve tham so
+	neu goi controller tu 1 list check box trong view, thi controller phai co tham so dau tien ten la "id" -> xem lai CompanyController/Edit(int id) trong superadmin cua HDDT
+	dung js de goi submit tren view: document.forms[0].submit();
+	Để upload dữ liệu lớn(>10Mb) lên web site asp.net, ta cần cấu hình trong web.config như sau:
+		- trong <system.web> thêm <httpRuntime maxRequestLength="độ lớn file dữ liệu, tính bằng Kb" executionTimeout="Thời gian timeout, tính bắng giây" />
+		- trong <system.webServer> thêm vào
+			<security>
+			  <requestFiltering>
+				<requestLimits maxAllowedContentLength="độ lớn file, tính bằng kb" />
+			  </requestFiltering>
+			</security>
+		- có thể phải đặt <system.web>
+			chuyển <compilation debug="true" về thành false
+</aspnet>
+<HTML-JS>
+	de khong cho form submit khi su dung onsubmit ta can lam nhu sau:
+		- them onsubmit="return ten_ham_js();" vao khai bao the <form>
+		- code ten_ham_js, co tra lai gia tri(true/false)
+</HTML-JS>
+<HDDT>
+	khi them mau hoa don cho hddt, phai them vao:
+		- trong file config, cho the <ControlReder> them 1 dong key, value moi, vơi key la ten cua mau hoa don them moi(ten chinh xac), value la ten view cua mau hoa don moi
+		- trong file config, cho the <InvoiceServiceType> them 1 dong key, value moi. voi key la ten mau hoa don(ten chinh xac), value la ten services thuc hien cac ham cho mau hoa don moi(services nay viet trong CORE)
+	Gui mail services, kiem tra log trong Computer Manager ->System Tools -> Event Viewer -> Applications and Services Logs ->Email Log
+	Tao bo cai mail services, trong setup project -> mở Project Assitant -> Application Files chọn primary output -> properties cho primary output ->  trong tab Com&.Net Setting phải tich chọn "Installer Class"
+	Viewer: phải thêm 
+		[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
+		[System.Runtime.InteropServices.ComVisibleAttribute(true)]
+		vào trước class winform để gọi hàm C# từ js của đối tượng winform.webbrower
+	Viewer: EInvBrowser.ScriptErrorsSuppressed = true; thêm vào để không hiển thị lỗi js khi bật viewer
+	Không xem được hóa đơn preview khi tạo bằng webservice, web: kiểm tra web.config/appSettings -> key PublishDomain xem gia tri co dung không
+	Chay HDDT với 10g:
+		- Build lại ứng dụng, với OracleDataAccess dll của 10g
+		- Thêm các config sau
+			File Web.config copy them dong
+				<qualifyAssembly partialName="Oracle.DataAccess" fullName="Oracle.DataAccess, Version=10.2.0.100, Culture=Neutral, PublicKeyToken=89b483f429c47342"/>
+			File Config/NHibernateConfig copy them dong
+				<property name="hbm2ddl.keywords">none</property>
+	Cài đặt plugin xem chứng thư:
+		- trên server iis, chọn minetype
+		- add thêm extension là xpi, nội dung minetype là application/x-xpinstall
+		- chú ý: với trang ssl, chỉ cài đặt được trên firefox nếu chúng thư ssl được global trust.
+</HDDT>
+<Debug>
+	dung chrome debug/net de debug goi tin http send/get
+</Debug>
+<WEB-CRAWLER>
+	sử dụng wget để lấy web về. Cú pháp: "wget [tham số] đường dẫn thư mục" Các tham số:
+		-A --accept=danh_sanh_cac_dinh_dang_file_cach_nhau_boi_dau_","_dinh_dang_đầu_có_thể_ko_download_về_được
+		-a ten_file_log
+		-r //đệ quy, lấy toàn bộ file, thư mục con về
+		-np -nH --cut-dirs độ_sâu_thư_mục	//không lấy các thư mục cha của đường dẫn về
+		-p --directory-prefix=ten_thư_mục_chứa	//copy các file, folder về và đặt vào thư mục xác định
+</WEB-CRAWLER>
+<.Net>
+	Kiểm tra máy đã cài .net hay chưa: kiểm tra HKLM\Software\Microsoft\NET Framework Setup\NDP\vX.YYYY
+		với X là phiên bản của .net, YYYY... là các số đi kèm version. Để kiểm tra phiên bản là sp 1/2.. đọc thẻ SP, giá trị 1,2.. chỉ .net sp 1,2... tương ứng
+</.Net>
+<CSS>
+	Để cho CSS chạy được trên mọi phiên bản của trình duyệt ie: hack css:
+		- thêm đoạn if else vào thẻ <head> của html 
+			<!--[if lt IE 7]>
+				<script src="http://ie7-js.googlecode.com/svn/version/2.1(beta4)/IE7.js"></script>
+			<![endif]-->
+			với IE 7 là phiên bản của trình duyệt, src chỉ tới file js cần dùng
+</CSS>
+<Web services>
+	The maximum string(maxstringcontentlength) hoac min string: do dai min, max cua tham so co kieu la string khi goi web services. Gia tri tham so nay can
+		phai chinh tren ca client va server -> nhay phai chuot vao web.config, chon WCF edit configuration(neu khong thay dong nay, vao Tool-> WCF configuration editor truoc)
+			- Trong binding chinh sua gia tri MaxBufferSize va MaxReceiveMessageSize ve gia tri bang nhau(mac dinh la 8192)
+</Web services>
+
+<Xml Deserialize>
+	DateTime Deserialize theo format mong muon:
+			public DateTime PerformanceDate { get; set; }
+			[DataMember(Name = "PerformanceDate")]
+			private string performanceDateSerialized { get; set; }
+			[OnSerializing]
+			void OnSerializing(StreamingContext context)
+			{
+				this.performanceDateSerialized = this.PerformanceDate.ToString("M/d/yyyy h:m:s tt", CultureInfo.InvariantCulture);
+			}
+		Dat truong PerformanceDate co kieu DateTime va la public(cho viec get, set). KHONG DUOC co the "DataMember". De 1 truong deserilize cho no, co 
+			kieu la string và PHẢI CÓ THẺ DataMember.
+			Thêm hàm OnSerializing cho trường đó, hàm này phải có thẻ "OnSerializing" như trên
+</Xml Deserialize>
+<Pattern>
+	[a-zA-Z0-9]: chỉ chấp nhận 1 kí tự là chữ cái, hoặc chữ số
+	^: phủ định
+	*: không hoặc nhiều lần lặp
+	+: 1 hoặc nhiều lần lặp
+	?: không có hoặc chỉ có 1 lần
+	%: kí tự cuối dòng(khác \r,\n, không view lên được)
+</Pattern>
+<Oracle>
+	export db ra 
+		expdp tenuser/pass_cho_user@sid_tuongung [CONTENT=METADATA_ONLY] [full=y] schemas= ten_schema dumpfile=ten_file_db.dmp logfile=ten_file_log
+		- CONTENT=METADATA_ONLY chỉ export schema, ko export data
+		- full=y export tất(nặng)
+	import db vao(gõ trực tiếp từ command line, ko dùng sqlplus)
+		- tao user moi cho db can import vao
+		- gan quyen cho user do(resource, connect, imp/exp neu can)
+		- thuc hien cau lenh
+			impdp ten_user/pass_cho_user@sid_tuong_ung dumpfile=ten_file_db.DMP logfile=ten_log_file.log [REMAP_SCHEMA=ten_schema_cua_db_cu:ten_schema_cua_db_moi]
+		- chay them cau lenh "@?/rdbms/admin/utlrp.sql" neu gap loi warm cho chac chan
+	import db vào(chỉ import 1 vài table, từ tài khoản user này sang tài khoản user khác) --- vd dùng imp của oracle 10g
+	imp vthcm/vthcm@hddtdb file=/database/oracle/admin/hddtdb/dpdump/tb_customer.dmp log=vthn_24_2_2014.log fromuser=tonghop touser=vthcm;
+	import db sử dụng sql developer:
+		- chọn view->dba để bật dba view lên
+		- tạo 1 connect dưới dba view, chuột phải vào data pump, chọn import wizard
+		- trong phần type, chọn Data or DLL.
+			trong type of import, tùy theo dmp file mà chọn full hoặc schema(chỉ import đủ schema)
+		- trong choose input file, chọn file .dmp cần import, click next
+		- trong phần filter, chọn schema để import(đây là schema của connect đang kết nối), chuyển nó sang cột bên phải
+		- trong phần remapping, chọn remap schemas để import db vào 1 schemas khác(trước đó cần tạo user-shema đổi tên trước)
+		- phần option thực hiện các tác vụ khi schemas đã chứa dữ liệu trước
+		- phần schedule thực hiện tạo lịch cho import(ko chỉ chạy 1 lần)
+		- click next và finish để thực hiện import
+	doi password
+		alter user ten_user identified by pass_moi;
+	liệt kê các sid của oracle
+		show parameter instance_name;
+	Liệt kê các table sử dụng partition
+		select * from user_tables where partitioned = 'YES';
+	import db từ tb không có partition sang table có partition:
+		- import db như bình thường(sang 1 table tạm, hoặc phải sang schema tạm)
+		- nếu table đích chưa tồn tại thì tạo table đích(tạo cả partition)
+		- thực hiện lệnh insert:
+			insert into table_đích_có_partition partition(tên_partition) select * from table_tạm;
+	Xóa user và schemas:
+		- check xem có connection nào tới user đang sử dụng không:
+			select s.sid, s.serial#, s.status, p.spid, s.username
+			from v$session s, v$process p
+			where s.username = 'tên_user_phân_biệt_hoa_thường'
+			and p.addr(+)= s.paddr;
+		- kill kết nôi:
+			alter system kill session '<sid>,<serial#>'; ----> thay <sid> và <serial#> từ bước trên vào
+		- kiểm tra job liên quan tới user
+			select job from dba_jobs where log_user='tên_user_phân_biệt_hoa_thường';
+		- kiểm tra user có chạy liên quan tới stream nào hay ko
+			select queue_table, qid from dba_queues where owner='tên_user_phân_biệt_hoa_thường';
+			select apply_name from dba_apply where queue_owner='tên_user_phân_biệt_hoa_thường';
+			select capture_name, queue_name from dba_capture where queue_owner='tên_user_phân_biệt_hoa_thường';
+			select propagation_name from dba_propagation where source_queue_owner='tên_user_phân_biệt_hoa_thường' or destination_queue_owner='tên_user_phân_biệt_hoa_thường';
+		- xóa user và schemas:
+			DROP USER tên_user_schemas CASCADE;
+	insert vào table có sử dụng id là sequence tự tăng
+		insert into tên_bảng (id....) values(tên_sequence.nextval,......);
+	thay thế n kí tự cuối của chuỗi
+		update ten_table set column_name=CONCAT(SUBSTR(column_name, 0, length(column_name)-so_ki_tu_can_replace),'gia_tri_moi_de_replace')
+	Config chay tren oracle 10g
+		- File Web copy them dong
+		<qualifyAssembly partialName="Oracle.DataAccess" fullName="Oracle.DataAccess, Version=10.2.0.100, Culture=Neutral, PublicKeyToken=89b483f429c47342"/>
+		- File Config/NHibernateConfig copy them dong
+		<property name="hbm2ddl.keywords">none</property>
+	tăng table space cho small file table space
+		select default_tablespace,temporary_tablespace from dba_users where username='ten_db_can_tang';
+		select * from dba_tablespace_usage_metrics order by used_percent desc;
+		SELECT file_name,round(BLOCKS*8192/(1024*1024)) Size_MB, tablespace_name FROM dba_data_files;
+		ALTER TABLESPACE users
+		  ADD DATAFILE 'Duong_dan_toi_noi_chua_data_file(lay_tu_cau_lenh_tren)/ten_data_file.dbf' SIZE 20G
+		  AUTOEXTEND ON
+		  NEXT 50M 
+		  MAXSIZE UNLIMITED;
+	Xem dung luong datafile còn trống
+		SELECT a.tablespace_name, a.file_name, a.bytes allocated_bytes, b.free_bytes FROM dba_data_files a, (SELECT file_id, SUM(bytes) free_bytes FROM dba_free_space b GROUP BY file_id) b WHERE a.file_id=b.file_id ORDER BY a.tablespace_name;
+table space cho bigfile table space
+	Tăng sử dụng process cho oracle
+		alter system set processes=1000 scope=spfile;
+	Chuỗi kết nối oracle nên cấu hình thêm các tham số:
+		Pooling=true;Min Pool Size=so_pool_min; Max Pool Size=so_pool_max;Connection Lifetime=thoi_gian_song;
+	Lỗi ORA-39097: Data Pump job encountered unexpected error -12801: phải clear data pump job
+		Check các data pump job đã dừng: select * from dba_datapump_jobs;
+			--> các job có status là 'Not Running' bị cache, phải clean up
+		Check Full name job cần xóa: SELECT o.status, o.object_id, o.object_type, o.owner || '.' || object_name FROM dba_objects o, dba_datapump_jobs j WHERE o.owner=j.owner_name AND o.object_name=j.job_name AND j.job_name NOT LIKE 'BIN$%' ORDER BY 4,2;
+			--> Nam lấy ở cột o.owner || '.' || object_name
+		Xóa job: drop table ten_job_pump_lay_o_tren;
+</Oracle>
+<LamTaiLieu>
+	Lập tài liệu tính cước: từ tài liệu yêu cầu, liệt kê và tính phí cho
+		- phân tích thiết kế
+		- code(dựa theo khối lượng công việc, số ngày công, số đầu mục công việc)
+		- test
+		- làm tài liệu, đào tạo
+		- tính công tư vấn tích hợp, công nghệ(nếu cần tư vấn)
+</LamTaiLieu>
+<WindowServices>
+	Remove services(không có trong uninstall, đã xóa mất file chạy): dùng cmd dưới quyền admin, sử dụng sc.exe: gõ lệnh sc delete ten_service_can_xoa
+	Để khởi động windows service từ command line: chạy cmd với quyền admin, gõ net start ten_service
+	Khi khởi động windows service gặp lỗi 1068: dependence.... dùng services.msc, click phải vào service đó, chọn properties -> tab depencies để xem các services phụ thuộc
+</WindowServices>
+<HSM>
+	- các bước sinh chứng thư vào hsm:
+		tạo cặp key
+		tạo cert request gửi cho ca
+		ca tạo cert
+		import cert vào máy(local machine) sử dụng certutil:
+			certutil -addstore my ten_file_cert.crt
+		repair lại thumbprint của cert với máy sử dụng certutil:
+			certutil -repairstore my "gia_tri_chuoi_thumbprint_cua_chung_thu"
+		--> kiem tra local machine csp se thay cert
+		--> kiem tra hk_local_machine_software_microsotf_cryptography_defaults_provider và provider types sẽ thấy provider của loại hsm.
+</HSM>
+<NghiepVu>
+	Truoc khi goi dien, list cac cau hoi va van de can trao doi ra
+	Khi hop voi doi tac, can nghe va list cac cau hoi cua ho ra, chua can nghi tra loi het dc ngay
+	
+</NghiepVu>
